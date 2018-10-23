@@ -1,0 +1,180 @@
+页面基本配置表 ftenlog_page_infos
+   id 编号
+   showId 显示控件编号 1:首页轮播广告栏  2:闪购优惠 3:好友开团 4:特惠商品 5:免费抽奖 6:幸运夺宝 7:达人攻略 8:领卷中心 9:每日打卡 10:商城通报
+   content 内容
+   pageId 表现在页面 1:用户首页 2:用户发现 3:用户我的 4:广告商首页 5:广告商发现 6:广告商我的
+   verify 正式开放
+   note 备注
+
+
+基础用户表 users
+	id 编号
+	userId 内部用户编号
+	appid  所属的appId
+	openId 微信返回的该对应小程序对应用户openId
+	unionId 微信返回的唯一公共用户ID
+	verify  用户审核状态 //1:正常 2:封禁 
+
+用户信息表:ftenlog_user_infos
+	userId 内部用户编号
+	userType 用户类型 //1:普通用户 2:广告商
+	userUpper 用户的广告商用户编号   // -1为无广告商用户 用户编号则为有广告商用户
+	userName 用户昵称
+	userSex 用户性别 //用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+	userCity 用户城市
+	userProvince 用户省份
+	userCountry 用户国家
+	userImg 用户头像
+	userCoin 用户抵消金额币
+
+
+用户抵消金额币获取消耗记录:ftenlog_user_coin_datas
+	id 编号
+	userId 内部用户编号
+	addCoin 增长金币数量
+	coinNum 金币数量
+	coinChannel 金币(获取/消耗)途径(消费交易号/获取活动号)
+
+广告商数据表:ftenlog_upper_user_datas
+	userId 内部用户编号
+	userChild 用户所包含的下级用户 [x,x,x,x,x,x,x,x,x,x]
+	backData 反款记录编号[x,x,x,x,x,x,x,x,x,x]
+	wxBack 微信反款联系账号
+	zfbBack 支付宝反款联系账号
+	bankCard 银行卡信息(JSON格式:[{"cardType":银行类型,"cardNo":银行卡号码,"cardName":持卡人名称}])
+
+普通用户数据表:ftenlog_user_main_datas
+	userId 内部用户编号
+	orderFail 待支付订单编号
+	orderSuccess 交易成功订单编号
+	orderEvaluate 未评价订单编号
+	addressData 收货地址编号
+	collection 用户收藏夹编号
+    shoppingCart 用户购物车编号
+    cartVolume 用户卡?编号
+
+用户收藏夹编号: ftenlog_collection_datas
+    id 收藏夹编号
+    userId 内部用户编号
+    contentType 收藏内容类型
+    contentId 收藏内容编号
+    cancelFlag 是否取消收藏
+
+
+用户地址表:ftenlog_user_address_datas
+	id 地址编号
+	userId 内部用户编号
+	name 联系人名称
+	phone 联系电话
+	address 收货地址
+	default 是否默认收货地址
+	verify 是否已删除
+	note 标签
+
+优惠卷表:ftenlog_volumes_infos
+    volumeId 优惠卷编号
+    applyRange 适用范围 商品编号[id,id,id]
+    numDiscount 减免规则 {"term":"达到多少钱","discount":"减免多少钱"}
+    validTime 有效期(多少小时)
+    stockNum 库存
+    receiveNum 领取次数
+    useNum 使用次数
+    verify 是否正式开放
+    note 备注
+
+用户优惠卷表:ftenlog_user_volumes
+    id //编号
+    userId 内部用户编号
+    volumeId 优惠卷编号
+    outTime //失效时间
+    status //状态 0:未使用 1:已使用 2:已失效
+    tradeNo //被使用的交易号
+
+套餐服务表:ftenlog_goods_types
+     goodsTypeId 产品类型编号
+     goodsTypeName 产品类型名字
+     goodsTypeDesc 产品类型描述
+     verify 已审核
+     note 备注
+
+
+商品表:ftenlog_shop_infos
+	productId 商品编号
+	goodsId	产品编号
+	goodsName 商品名称
+	goodsDesc 商品描述
+	complex 是套餐产品
+	comment 复合内容
+	                [{"goodsId":"TD020","quantity":6},{"goodsId":"TD004","quantity":1},{"goodsId":"TD012","quantity":1}]  //普通商品
+	               {"articles":[],"strategys":[],goods":[{"productId":"TD020","quantity":6},{"goodsId":"TD004","quantity":1}]}//文章 攻略 商品 套餐商品
+	category 产品类型
+	price 定价/分
+	storeId 商家编号
+	storeName 商家名称
+	verify 已审核
+	note 备注
+	discount 是否特惠  {"flag":true,"discounts":1000} //flag 是否开启 discounts 折扣力度
+	expand 业务拓展 {"topCount":"虚高价格","saleNum":"虚拟销售量"}
+	saleNum 真实销售量
+	barImg,//广告轮播图
+    briefImg//介绍图
+    numDiscount//减免规则 {"term":"达到多少钱","discount":"减免多少钱"}
+    talk //评论编号集合
+    collection //收藏数
+	
+
+交易订单表:ftenlog_order_datas
+	tradeNo 交易号
+	orderNo 订单号
+	userId 内部用户编号
+	storeId 商家编号
+	storeName 商家名称
+	totalAmount 订单金额/分
+	goodsName 商品名称
+	goodsDesc 商品描述
+	goodsDetail 订单包含的商品列表信息
+	extendParams 业务扩展参数
+	extUserInfo 买家额外信息
+	payTimeout 最晚付款时间(失效时间)
+	payAmount 买家实付金额/分
+	receiptAmount 实收金额/分
+	serialNo 支付流水号
+	tradeStatus 交易状态 //0:未支付 1:已支付 2:已发货 3:已收货 4:已退款
+	payTime 交易支付时间
+	address 收货地址编号
+	offsetMoney 抵消金额
+
+交易返回记录收集表:ftenlog_notify_logs
+	id 记录编号
+	method
+	bizIn
+	bizOut
+
+打款广告商表:ftenlog_amount_backs
+	id 反款编号
+	tradeNo 交易号
+	upperId 反款用户（广告商）
+	userId 用户消费者
+	totalAmount 订单金额/分
+	payAmount 买家实付金额/分
+	offsetAmount 抵消金额
+	backAmount 反款金额
+	backStatus 反款状态 1:待反款 2:已反款
+	backType 反款途径 1:微信 2:支付宝 3:银行卡
+	backAccount 反款账号信息
+	backSerialNo 反款交易号
+	backPropose 申请提出反款
+	backSuccess 处理反款成功
+
+	  
+//$url1 = 'http://www.kuaidi100.com/query?type='.$log1->shipperCode.'&postid='.$log1->logisticCode; //免费接口
+物流表:ftenlog_logistics_datas
+	tradeNo 交易号
+	shipperCode 快递公司编号(参考文档120.77.82.54/logistics/shipperCode.doc)
+	logisticCode 物流运单号
+	status 成功码  0：物流单暂无结果，1：查询成功，2：接口出现异常
+	state 物流状态码 0：在途 1：揽件 2：疑难 3：签收 4：退签 5：派件 6：退回
+	errorMsg 物流发生错误内容
+	body 物流内容
+
+		
